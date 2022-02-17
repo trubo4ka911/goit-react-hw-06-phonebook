@@ -1,11 +1,16 @@
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import actions from "./actions";
+import { configureStore } from "@reduxjs/toolkit";
+import reducer from "./contactsReducer";
 
-const reducer = combineReducers({
-  contacts: actions,
+const rootReducer = combineReducers({
+  contacts: reducer,
 });
 
-const store = createStore(reducer, composeWithDevTools());
+const store = createStore(rootReducer, composeWithDevTools());
+// const store = configureStore({
+//   contacts: reducer,
+//   filter: ''
+// })
 
 export default store;

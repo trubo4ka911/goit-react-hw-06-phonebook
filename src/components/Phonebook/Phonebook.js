@@ -7,59 +7,61 @@ import ContactList from "../ContactList/ContactList";
 import Filter from "../Filter/Filter";
 
 const Phonebook = () => {
-  const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState("");
+  // const [contacts, setContacts] = useState([]);
+  // const [filter, setFilter] = useState("");
 
-  useEffect(() => {
-    const storedContacts = localStorage.getItem("contacts")
-      ? JSON.parse(localStorage.getItem("contacts"))
-      : [];
-    setContacts(storedContacts);
-  }, []);
+  // useEffect(() => {
+  //   const storedContacts = localStorage.getItem("contacts")
+  //     ? JSON.parse(localStorage.getItem("contacts"))
+  //     : [];
+  //   setContacts(storedContacts);
+  // }, []);
 
-  const formSubmitHandler = ({ name = "", number = "" }) => {
-    if (name === "" || number === "") return;
-    if (contacts.some((item) => item.name.toLowerCase() === name)) {
-      return toast.error(`${name} is already in your contacts`);
-    }
-    const newContact = {
-      id: nanoid(5),
-      name: name.toLowerCase(),
-      number,
-    };
-    const updateContacts = [...contacts, newContact];
-    setContacts(updateContacts);
-    localStorage.setItem("contacts", JSON.stringify(updateContacts));
-    return toast.success(`Contact ${newContact.name} added successfully!`);
-  };
+  // const formSubmitHandler = ({ name = "", number = "" }) => {
+  //   if (name === "" || number === "") return;
+  //   if (contacts.some((item) => item.name.toLowerCase() === name)) {
+  //     return toast.error(`${name} is already in your contacts`);
+  //   }
+  //   const newContact = {
+  //     id: nanoid(5),
+  //     name: name.toLowerCase(),
+  //     number,
+  //   };
+  //   const updateContacts = [...contacts, newContact];
+  //   setContacts(updateContacts);
+  //   localStorage.setItem("contacts", JSON.stringify(updateContacts));
+  //   return toast.success(`Contact ${newContact.name} added successfully!`);
+  // };
 
-  const clickDelete = (e) => {
-    const updateContacts = contacts.filter((contact) => contact.id !== e);
-    setContacts(updateContacts);
-    localStorage.setItem("contacts", JSON.stringify(updateContacts));
-    return toast.info(`Contact deleted!`);
-  };
+  // const clickDelete = (e) => {
+  //   const updateContacts = contacts.filter((contact) => contact.id !== e);
+  //   setContacts(updateContacts);
+  //   localStorage.setItem("contacts", JSON.stringify(updateContacts));
+  //   return toast.info(`Contact deleted!`);
+  // };
 
-  const changeFilter = (e) => {
-    setFilter(e.currentTarget.value);
-  };
+  // const changeFilter = (e) => {
+  //   setFilter(e.currentTarget.value);
+  // };
 
-  const getVisibleContacts = () => {
-    const normalizedFilter = filter.toLowerCase();
-    return contacts.filter((contact) =>
-      contact.name.toLowerCase().includes(normalizedFilter)
-    );
-  };
+  // const getVisibleContacts = () => {
+  //   const normalizedFilter = filter.toLowerCase();
+  //   return contacts.filter((contact) =>
+  //     contact.name.toLowerCase().includes(normalizedFilter)
+  //   );
+  // };
 
-  const visibleContacts = getVisibleContacts();
+  // const visibleContacts = getVisibleContacts();
   return (
     <>
       <ToastContainer position="top-right" theme="colored" />
       <h1>Phonebook</h1>
-      <Form onSubmit={formSubmitHandler} />
+      <Form />
       <h2>Contacts</h2>
-      <Filter value={filter} onChange={changeFilter} />
-      <ContactList contacts={visibleContacts} click={clickDelete} />
+      {/* <Filter value={filter} onChange={changeFilter} /> */}
+      {/* <ContactList contacts={visibleContacts} click={clickDelete} /> */}
+      <Filter />
+      <ContactList />
     </>
   );
 };

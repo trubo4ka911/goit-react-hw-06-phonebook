@@ -1,5 +1,7 @@
 import React from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import contactsAction from "../../redux/contactsAction.js";
 import { MdDeleteForever } from "react-icons/md";
 import {
   ContactBtn,
@@ -8,16 +10,16 @@ import {
   ContactText,
 } from "./Contact.styled.js";
 
-const ContactsList = ({ contacts, click }) => {
+const ContactsList = ({ contacts, onDeleteContact }) => {
   return (
     <>
       <ContactList>
-        {contacts.map((contact) => (
-          <ContactItem key={contact.id}>
-            <ContactText>{contact.name}:</ContactText>
-            <ContactText>{contact.number}</ContactText>
+        {contacts.map(({ id, name, number }) => (
+          <ContactItem key={id}>
+            <ContactText>{name}:</ContactText>
+            <ContactText>{number}</ContactText>
 
-            <ContactBtn onClick={() => click(contact.id)}>
+            <ContactBtn onClick={() => onDeleteContact(id)}>
               <MdDeleteForever />
             </ContactBtn>
           </ContactItem>
@@ -27,8 +29,32 @@ const ContactsList = ({ contacts, click }) => {
   );
 };
 
-ContactList.propTypes = {
-  contacts: PropTypes.array,
+const getVisibleContacts = (allContacts, filter) => {
+  const normalizedFilter = filter.toLowerCase();
+
+  return allContacts.filter(({ name }) =>
+    name.toLowerCase().includes(normalizedFilter)
+  );
 };
 
-export default ContactsList;
+// ContactList.propTypes = {
+//   contacts: PropTypes.array,
+// };
+
+// const mapStateToProps = (state) => {
+//   const {filter, items} = state.contacts;
+//   const visibleContacts = getVisibleContacts(items, filter)
+//   return {
+//   contacts: visibleContacts
+// }}
+// рефакторинг
+
+const mapStateToProps = ({ contacts: { items, filter } }) => ({
+  contacts: getVisibleContacts(items, filter),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onDeleteContact: (id) => dispatch(contactsAction.deleteContact(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactsList);

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import contactsActions from "../../redux/contactsAction";
 import { MdAccountBox, MdPhoneIphone } from "react-icons/md";
 import { nanoid } from "nanoid";
 import {
@@ -64,4 +66,8 @@ const Form = ({ onSubmit }) => {
   );
 };
 
-export default Form;
+const mapDispatchToProps = (dispatch) => ({
+  onSubmit: (text) => dispatch(contactsActions.addContact(text)),
+});
+
+export default connect(null, mapDispatchToProps)(Form);
