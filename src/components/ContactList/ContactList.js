@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import contactsAction from "../../redux/contactsAction.js";
 import { MdDeleteForever } from "react-icons/md";
 import {
@@ -18,7 +17,6 @@ const ContactsList = ({ contacts, onDeleteContact }) => {
           <ContactItem key={id}>
             <ContactText>{name}:</ContactText>
             <ContactText>{number}</ContactText>
-
             <ContactBtn onClick={() => onDeleteContact(id)}>
               <MdDeleteForever />
             </ContactBtn>
@@ -36,18 +34,6 @@ const getVisibleContacts = (allContacts, filter) => {
     name.toLowerCase().includes(normalizedFilter)
   );
 };
-
-// ContactList.propTypes = {
-//   contacts: PropTypes.array,
-// };
-
-// const mapStateToProps = (state) => {
-//   const {filter, items} = state.contacts;
-//   const visibleContacts = getVisibleContacts(items, filter)
-//   return {
-//   contacts: visibleContacts
-// }}
-// рефакторинг
 
 const mapStateToProps = ({ contacts: { items, filter } }) => ({
   contacts: getVisibleContacts(items, filter),
