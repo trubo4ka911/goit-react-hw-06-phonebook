@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
-import contactsActions from "../../redux/contactsAction";
+import { useDispatch } from "react-redux";
+import { addContact } from "../../redux/contactsAction";
 import { MdAccountBox, MdPhoneIphone } from "react-icons/md";
 import { nanoid } from "nanoid";
 import {
@@ -10,9 +10,9 @@ import {
   PhonebookButton,
 } from "./Form.styled";
 
-const Form = ({ onSubmit }) => {
+export default function Form() {
   const [contactInfo, setContactInfo] = useState({ name: "", number: "" });
-
+  const dispatch = useDispatch();
   const handleNameChange = (e) => {
     const { name, value } = e.target;
     setContactInfo({ ...contactInfo, [name]: value });
@@ -20,7 +20,7 @@ const Form = ({ onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(contactInfo);
+    dispatch(addContact(contactInfo));
     setContactInfo({ name: "", number: "" });
   };
   const { name, number } = contactInfo;
@@ -64,10 +64,4 @@ const Form = ({ onSubmit }) => {
       </PhonebookButton>
     </PhonebookForm>
   );
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  onSubmit: (text) => dispatch(contactsActions.addContact(text)),
-});
-
-export default connect(null, mapDispatchToProps)(Form);
+}

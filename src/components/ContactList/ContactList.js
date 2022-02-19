@@ -1,6 +1,6 @@
 import React from "react";
-import { connect } from "react-redux";
-import contactsAction from "../../redux/contactsAction.js";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteContact } from "../../redux/contactsAction.js";
 import { MdDeleteForever } from "react-icons/md";
 import {
   ContactBtn,
@@ -9,7 +9,21 @@ import {
   ContactText,
 } from "./Contact.styled.js";
 
-const ContactsList = ({ contacts, onDeleteContact }) => {
+const getVisibleContacts = (allContacts, filter) => {
+  const normalizedFilter = filter.toLowerCase();
+
+  return allContacts.filter(({ name }) =>
+    name.toLowerCase().includes(normalizedFilter)
+  );
+};
+
+export default function ContactsList() {
+  const contacts = useSelector((state) =>
+    getVisibleContacts(state.contacts.items, state.contacts.filter)
+  );
+  const dispatch = useDispatch();
+  const onDeleteContact = (id) => dispatch(deleteContact(id));
+
   return (
     <>
       <ContactList>
@@ -25,22 +39,4 @@ const ContactsList = ({ contacts, onDeleteContact }) => {
       </ContactList>
     </>
   );
-};
-
-const getVisibleContacts = (allContacts, filter) => {
-  const normalizedFilter = filter.toLowerCase();
-
-  return allContacts.filter(({ name }) =>
-    name.toLowerCase().includes(normalizedFilter)
-  );
-};
-
-const mapStateToProps = ({ contacts: { items, filter } }) => ({
-  contacts: getVisibleContacts(items, filter),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onDeleteContact: (id) => dispatch(contactsAction.deleteContact(id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactsList);
+}

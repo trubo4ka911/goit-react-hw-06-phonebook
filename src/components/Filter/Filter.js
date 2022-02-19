@@ -1,9 +1,12 @@
-import { connect } from "react-redux";
-import contactsAction from "../../redux/contactsAction";
+import { useSelector, useDispatch } from "react-redux";
+import { changeFilter } from "../../redux/contactsAction";
 import { FilterForm, FilterInput, FilterBtn } from "./Filter.styled";
 import { MdSearch } from "react-icons/md";
 
-const Filter = ({ value, onChange }) => {
+export default function Filter() {
+  const value = useSelector((state) => state.contacts.filter);
+  const dispatch = useDispatch();
+  const onChange = (e) => dispatch(changeFilter(e.target.value));
   return (
     <>
       <h3>Find contacts by name</h3>
@@ -22,14 +25,4 @@ const Filter = ({ value, onChange }) => {
       </FilterForm>
     </>
   );
-};
-
-const mapStateToProps = (state) => ({
-  value: state.contacts.filter,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onChange: (e) => dispatch(contactsAction.changeFilter(e.target.value)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);
+}
